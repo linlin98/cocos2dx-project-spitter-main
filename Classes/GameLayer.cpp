@@ -14,6 +14,18 @@ GameLayer::~GameLayer()
 
 bool GameLayer::init()
 {
+	propertyManager * pManager = propertyManager::create();
+	//pManager->setPlayerName("A");
+	pManager->setArmatureName("hero");
+	pManager->setDataName("hero/hero.ExportJson");
+	//pManager->setHP()
+	pManager->retain();
+
+	auto hero = BaseRole::creatWithProperty(pManager);
+	hero->setPosition(Vec2(400,200));
+	hero->type = static_cast<RoleType>(1);
+	this->addChild(hero,1,1);	
+	
 	auto winSize = Director::getInstance()->getWinSize();
 	auto bg_pic = Sprite::create("res/background_demo.png");
 	bg_pic->setPosition(Point(winSize.width / 2, winSize.height / 2));

@@ -77,6 +77,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	*/
 
     register_all_packages();
+    
+    FileUtils::getInstance()->addSearchPath("res");
+	FileUtils::getInstance()->addSearchPath("res/Export");
 
     // create a scene. it's an autorelease object
     //auto scene = SceneManager::createLoadScene();
