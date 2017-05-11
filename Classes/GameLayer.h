@@ -5,7 +5,16 @@
 #include <iostream>
 #include "cocos2d.h"
 #include "SceneManager.h"
+#include "BaseRole.h"
+#include "RoleCardController.h"
+#include "BaseFSM.h"
 USING_NS_CC;
+
+//typedef enum RoleFace
+//{
+//	FACE_LEFT = 1,
+//	FACE_RIGHT,
+//}RoleFace;
 class GameLayer : public Layer
 {
 public:
@@ -14,7 +23,13 @@ public:
 	CREATE_FUNC(GameLayer);
 	virtual bool init();
 	void menuCallBack(Ref * pSender);
+	void update(float dt);
 public:
+	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
+	int keyPressedDuration();
+public:
+	BaseRole * hero;
 	SceneManager * tsm;
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };
 #endif
