@@ -8,6 +8,7 @@
 #include "BaseRole.h"
 #include "RoleCardController.h"
 #include "BaseFSM.h"
+#include "BaseAI.h"
 USING_NS_CC;
 
 //typedef enum RoleFace

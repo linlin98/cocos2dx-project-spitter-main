@@ -35,12 +35,17 @@ bool GameLayer::init()
 	pManager->setDataName("hero/hero.ExportJson");
 	pManager->setSPEED(2);//前进后退速度应该不一致，有待修改
 	//pManager->setHP()
+	pManager->setGetHitRect({ { -40,-40 },{ 80,80 } });
+	pManager->setHitRect({ {40,-40},{80,80} });
+	pManager->setHitPoint(pManager->getHitRect().origin);
+	pManager->setGetHitPoint(pManager->getGetHitRect().origin);
 	pManager->retain();
 
 	hero = BaseRole::creatWithProperty(pManager);
 	hero->setPosition(Vec2(400,200));
 	hero->type = static_cast<RoleType>(1);
 	hero->state = ROLE_DEFAULT;
+	hero->face = FACE_RIGHT;
 	this->addChild(hero,1,1);
 
 	RoleCardController::getInstance()->heroVec.push_back(hero);
@@ -48,6 +53,12 @@ bool GameLayer::init()
 	BaseFSM * basefsm = BaseFSM::createFSM(hero);
 	basefsm->retain();
 	hero->setBaseFSM(basefsm);
+
+	BaseAI * ai = BaseAI::creatAI(hero);
+	ai->retain();
+	hero->setBaseAI(ai);
+
+	ai->startRoleAI();
 
 	auto winSize = Director::getInstance()->getWinSize();
 	auto bg_pic = Sprite::create("res/background_demo.png");

@@ -6,6 +6,7 @@
 #include "propertyManager.h"
 #include "cocostudio/CocoStudio.h"
 #include "BaseFSM.h"
+#include "BaseAI.h"
 USING_NS_CC;
 //using namespace CocosDenshion;
 using namespace cocostudio;
@@ -30,6 +31,7 @@ typedef enum RoleFace
 }RoleFace;
 
 class BaseFSM;
+class BaseAI;
 
 class BaseRole : public Node
 {
@@ -39,12 +41,19 @@ public:
 	static BaseRole * creatWithProperty(propertyManager * manager);
 	bool init(propertyManager * manager);
 public:
+	void changeFaceDirection(RoleFace face);
+	void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)override;
+	void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
+	cocos2d::CustomCommand _customCommand;
+public:
 	propertyManager * propertymanager;
 	RoleType type;
 	RoleState state;
 	RoleFace face;
 	CC_SYNTHESIZE(Armature *, armature, Armature);
 	CC_SYNTHESIZE(BaseFSM *, basefsm, BaseFSM);
+public:
+	CC_SYNTHESIZE(BaseAI *, baseai, BaseAI);
 };
 #endif
 

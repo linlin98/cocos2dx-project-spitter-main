@@ -20,6 +20,9 @@ public:
 	CC_SYNTHESIZE(std::string, DataName, DataName);//动画名字
 	CC_SYNTHESIZE(std::string, PlayerName, PlayerName);//人物名字
 
+	CC_SYNTHESIZE(Rect, HitRect, HitRect);
+	CC_SYNTHESIZE(Point, HitPoint, HitPoint);
+
 	CC_SYNTHESIZE(Rect, GetHitRect, GetHitRect);
 	CC_SYNTHESIZE(Point, GetHitPoint, GetHitPoint);
 };

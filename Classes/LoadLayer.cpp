@@ -17,7 +17,7 @@ bool LoadLayer::init()
 	Label * label = Label::createWithTTF("Loading...","fonts/Marker Felt.ttf",32);
 	//auto size = Director::getInstance()->getWinSize();
 	
-	label->setPosition(Point(280, 200));
+	label->setPosition(Point(winSize.width/2, winSize.height/2));
 
 //	auto point = label->getPosition();
 
