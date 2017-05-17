@@ -92,8 +92,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(manager->loadScene);
 
-	glview->setDesignResolutionSize(480.0f, 320.0f, ResolutionPolicy::FIXED_HEIGHT);
-	director->setContentScaleFactor(480.0f / 320.0f);
+	glview->setDesignResolutionSize(864.0f, 480.0f, ResolutionPolicy::FIXED_HEIGHT);
+	director->setContentScaleFactor(864.0f / 480.0f);
     return true;
 }
 
