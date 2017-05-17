@@ -20,7 +20,7 @@ BaseFSM * BaseFSM::createFSM(BaseRole * baserole)
 	} 
 	else
 	{
-		CC_SAFE_DELETE(baserole);
+		CC_SAFE_DELETE(basefsm);
 		//return nullptr;
 	}
 	return basefsm;
@@ -58,9 +58,15 @@ void BaseFSM::changeToLeft()
 	{
 		role->state = ROLE_MOVE;
 	}
+
+	if (role->face == FACE_RIGHT)
+	{
+		role->changeFaceDirection(FACE_LEFT);
+	}
+
 		std::string movement = role->getArmature()->getAnimation()->getCurrentMovementID();
 		char * nowMovement = const_cast<char *>(movement.c_str());
-		if (strcmp(nowMovement,"run_front"))
+		if (strcmp(nowMovement, "run_front"))
 		{
 			role->getArmature()->getAnimation()->play("run_front");
 		}
@@ -74,11 +80,18 @@ void BaseFSM::changeToRight()
 	{
 		role->state = ROLE_MOVE;
 	}
+
+	if (role->face == FACE_LEFT)
+	{
+		role->changeFaceDirection(FACE_RIGHT);
+	}
+
 	std::string movement = role->getArmature()->getAnimation()->getCurrentMovementID();
 	char * nowMovement = const_cast<char *>(movement.c_str());
-	if (strcmp(nowMovement, "run_back"))
+
+	if (strcmp(nowMovement, "run_front"))//if the current movement is not running back ,play it.
 	{
-		role->getArmature()->getAnimation()->play("run_back");
+		role->getArmature()->getAnimation()->play("run_front");
 	}
 	
 	role->setPosition(Vec2(role->getPositionX() + role->propertymanager->getSPEED(), role->getPositionY()));
