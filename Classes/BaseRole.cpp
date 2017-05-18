@@ -68,7 +68,7 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 		}
 		if (movmentType == COMPLETE)
 		{
-			basefsm->changeToDefault();
+			basefsm->changeToDefault(1);
 		}
 	}
 }

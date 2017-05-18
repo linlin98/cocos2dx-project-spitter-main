@@ -33,12 +33,12 @@ bool BaseFSM::init(BaseRole * baserole)
 	return true;
 }
 
-void BaseFSM::changeToDefault()
+void BaseFSM::changeToDefault(int i)
 {
-	//if (role->state == ROLE_ATTACK)
-	//{
-	//	return;
-	//}
+	if (role->state == ROLE_ATTACK && i == 0)
+	{
+		return;
+	}
 
 	if (role->state != ROLE_DEFAULT && role->state != ROLE_DEAD)
 	{

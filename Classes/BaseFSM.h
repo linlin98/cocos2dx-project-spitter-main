@@ -17,7 +17,7 @@ public:
 	static BaseFSM * createFSM(BaseRole * baserole);
 	bool init(BaseRole * baserole);
 public:
-	void changeToDefault();
+	void changeToDefault(int i = 0);//Ĭ�ϲ�������д���������壬�����ܼ�� 
 	void changeToDead();
 	void changeToAttack();
 	void changeToLeft();
