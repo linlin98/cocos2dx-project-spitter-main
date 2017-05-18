@@ -35,6 +35,11 @@ bool BaseFSM::init(BaseRole * baserole)
 
 void BaseFSM::changeToDefault()
 {
+	//if (role->state == ROLE_ATTACK)
+	//{
+	//	return;
+	//}
+
 	if (role->state != ROLE_DEFAULT && role->state != ROLE_DEAD)
 	{
 		role->state = ROLE_DEFAULT;
@@ -52,8 +57,22 @@ void BaseFSM::changeToDead()
 	}
 }
 
+void BaseFSM::changeToAttack()
+{
+	if (role->state != ROLE_ATTACK && role->state != ROLE_DEAD)
+	{
+		role->state = ROLE_ATTACK;
+		role->getArmature()->getAnimation()->play("attack",-1,0);
+	}
+}
+
 void BaseFSM::changeToLeft()
 {
+	if (role->state == ROLE_ATTACK)
+	{
+		return;
+	}
+
 	if (role->state != ROLE_MOVE && role->state != ROLE_DEAD)
 	{
 		role->state = ROLE_MOVE;
@@ -76,6 +95,11 @@ void BaseFSM::changeToLeft()
 
 void BaseFSM::changeToRight()
 {
+	if (role->state == ROLE_ATTACK)
+	{
+		return;
+	}
+
 	if (role->state != ROLE_MOVE && role->state != ROLE_DEAD)
 	{
 		role->state = ROLE_MOVE;
@@ -103,6 +127,28 @@ void BaseFSM::switchMoveState(int state)
 	{
 	case 0:
 		this->changeToDefault();
+		break;
+	case FACE_LEFT:
+		this->changeToLeft();
+		break;
+	case FACE_RIGHT:
+		this->changeToRight();
+		break;
+	default:
+		role->getArmature()->stopAllActions();
+		break;
+	}
+}
+
+void BaseFSM::switchActionState(int state)
+{
+	switch (state)
+	{
+	case 0:
+		this->changeToDefault();
+		break;
+	case ROLE_ATTACK:
+		this->changeToAttack();
 		break;
 	case FACE_LEFT:
 		this->changeToLeft();

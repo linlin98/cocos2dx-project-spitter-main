@@ -19,10 +19,12 @@ public:
 public:
 	void changeToDefault();
 	void changeToDead();
+	void changeToAttack();
 	void changeToLeft();
 	void changeToRight();
 	//void changeToEnemy();
 	void switchMoveState(int state);
+	void switchActionState(int state);
 
 public:
 	BaseRole * role;

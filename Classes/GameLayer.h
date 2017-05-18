@@ -27,9 +27,11 @@ public:
 	void update(float dt);
 public:
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
-	int keyPressedDuration();
+	int keyPressedDurationDirection();
+	int keyPressedDurationAcion();
 public:
 	BaseRole * hero;
+	BaseRole * monster;
 	SceneManager * tsm;
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };

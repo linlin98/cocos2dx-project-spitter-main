@@ -17,8 +17,12 @@ public:
 	static RoleCardController* getInstance();
 	bool init();
 public:
+	CC_SYNTHESIZE(int, HeroID, HeroID);
+public:
 	std::vector<BaseRole *> heroVec;
 	std::vector<BaseRole *> monsterVec;
+
+	BaseRole * getHero();
 };
 
 #endif

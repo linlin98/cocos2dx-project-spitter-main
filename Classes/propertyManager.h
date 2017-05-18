@@ -25,6 +25,9 @@ public:
 
 	CC_SYNTHESIZE(Rect, GetHitRect, GetHitRect);
 	CC_SYNTHESIZE(Point, GetHitPoint, GetHitPoint);
+
+	CC_SYNTHESIZE(unsigned int, LockLimit, LockLimit);
+	CC_SYNTHESIZE(unsigned int, ATKLimit, ATKLimit);
 };
 
 #endif 

@@ -24,5 +24,18 @@ RoleCardController * RoleCardController::getInstance()
 
 bool RoleCardController::init()
 {
+	
 	return true;
+}
+
+BaseRole * RoleCardController::getHero()
+{
+	for (int i = 0; i < heroVec.size(); i++)
+	{
+		if (heroVec[i]->propertymanager->getID() == this->getHeroID())
+		{
+			return heroVec[i];
+		}
+	}
+	return nullptr;
 }

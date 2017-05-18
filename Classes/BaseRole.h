@@ -22,6 +22,7 @@ typedef enum RoleState
 	ROLE_DEFAULT = 1,
 	ROLE_MOVE,
 	ROLE_DEAD,
+	ROLE_ATTACK,
 }RoleState;
 
 typedef enum RoleFace
@@ -42,6 +43,9 @@ public:
 	bool init(propertyManager * manager);
 public:
 	void changeFaceDirection(RoleFace face);
+
+	void animationEvent(Armature * pArmature, MovementEventType movmentType, const std::string & movementIDstr);
+
 	void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)override;
 	void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 	cocos2d::CustomCommand _customCommand;
@@ -50,6 +54,7 @@ public:
 	RoleType type;
 	RoleState state;
 	RoleFace face;
+	int ID;
 	CC_SYNTHESIZE(Armature *, armature, Armature);
 	CC_SYNTHESIZE(BaseFSM *, basefsm, BaseFSM);
 public:

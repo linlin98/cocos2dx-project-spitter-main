@@ -1,5 +1,6 @@
 #include "BaseRole.h"
-
+#include "BaseFSM.h"
+#include "BaseAI.h"
 
 
 BaseRole::BaseRole()
@@ -36,6 +37,8 @@ bool BaseRole::init(propertyManager * manager)
 
 	this->addChild(armature);
 
+	armature->getAnimation()->setMovementEventCallFunc(CC_CALLBACK_0(BaseRole::animationEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
 	return true;
 }
 
@@ -52,6 +55,21 @@ void BaseRole::changeFaceDirection(RoleFace face)
 		armature->setScaleX(1);
 		propertymanager->setHitRect(Rect(propertymanager->getHitPoint().x, propertymanager->getHitRect().origin.y, propertymanager->getHitRect().size.width, propertymanager->getHitRect().size.width));
 		this->face = face;
+	}
+}
+
+void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentType, const std::string & movementIDstr)
+{
+	const char * movementID = movementIDstr.c_str();
+	if (!strcmp(movementID, "attack"))
+	{
+		if (movmentType == START)
+		{
+		}
+		if (movmentType == COMPLETE)
+		{
+			basefsm->changeToDefault();
+		}
 	}
 }
 
