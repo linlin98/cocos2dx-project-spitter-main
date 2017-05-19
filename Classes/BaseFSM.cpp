@@ -33,6 +33,12 @@ bool BaseFSM::init(BaseRole * baserole)
 	return true;
 }
 
+void BaseFSM::purge()
+{
+	role = nullptr;
+	CC_SAFE_RELEASE(this);
+}
+
 void BaseFSM::changeToDefault(int i)
 {
 	if (role->state == ROLE_ATTACK && i == 0)

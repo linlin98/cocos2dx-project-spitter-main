@@ -41,7 +41,8 @@ void BaseAI::startRoleAI()
 
 void BaseAI::stopRoleAI()
 {
-	Director::getInstance()->getScheduler()->unscheduleAll();
+	//Director::getInstance()->getScheduler()->unscheduleAll();
+	Director::getInstance()->getScheduler()->unschedule(CC_SCHEDULE_SELECTOR(BaseAI::updateFunc), this);
 }
 
 void BaseAI::updateFunc(float dt)
@@ -120,4 +121,11 @@ void BaseAI::updateFunc(float dt)
 			baseRole->getBaseFSM()->changeToDefault();
 		}
 	}
+}
+
+void BaseAI::purge()
+{
+	stopRoleAI();
+	baseRole = nullptr;
+	CC_SAFE_RELEASE(this);
 }

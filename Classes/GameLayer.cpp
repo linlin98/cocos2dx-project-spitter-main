@@ -32,6 +32,8 @@ bool GameLayer::init()
 	propertyManager * pManager = propertyManager::create();
 	//pManager->setPlayerName("A");
 	pManager->setID(1);
+	pManager->setATK(10);
+	pManager->setHP(100);
 	pManager->setArmatureName("hero");
 	pManager->setDataName("hero/hero.ExportJson");
 	pManager->setSPEED(2);//前进后退速度应该不一致，有待修改
@@ -55,9 +57,11 @@ bool GameLayer::init()
 	propertyManager * pManager2 = propertyManager::create();
 	//pManager->setPlayerName("A");
 	pManager2->setID(2);
+	pManager2->setATK(10);
+	pManager2->setHP(100);
 	pManager2->setArmatureName("hero");
 	pManager2->setDataName("hero/hero.ExportJson");
-	pManager2->setSPEED(2);//前进后退速度应该不一致，有待修改
+	pManager2->setSPEED(1);//前进后退速度应该不一致，有待修改
 						  //pManager->setHP()
 	pManager2->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager2->setHitRect({ { 40,-40 },{ 80,80 } });
@@ -122,7 +126,8 @@ void GameLayer::menuCallBack(Ref * pSender)
 		case 101:
 		{
 			this->unscheduleAllSelectors();
-			monster->getBaseAI()->stopRoleAI();
+			Director::getInstance()->getScheduler()->unscheduleAll();
+			//monster->getBaseAI()->stopRoleAI();
 			tsm->goOpenScene();
 		}
 		break;
@@ -136,6 +141,38 @@ void GameLayer::update(float dt)
 		rightArrow = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
 		a = EventKeyboard::KeyCode::KEY_A;
 	hero->getBaseFSM()->switchActionState(keyPressedDurationAcion());
+
+	auto itr = RoleCardController::getInstance()->monsterVec.begin();
+	while (itr != RoleCardController::getInstance()->monsterVec.end())
+	{
+		if ((*itr)->state == ROLE_FREE)
+		{
+			(*itr)->purge();
+			RoleCardController::getInstance()->monsterVec.erase(itr);
+			break;
+		}
+		++itr;
+	}
+	if (RoleCardController::getInstance()->monsterVec.size() == 0 )
+	{
+		log("win");
+	}
+
+	itr = RoleCardController::getInstance()->heroVec.begin();
+	while (itr != RoleCardController::getInstance()->heroVec.end())
+	{
+		if ((*itr)->state == ROLE_FREE)
+		{
+			(*itr)->purge();
+			RoleCardController::getInstance()->heroVec.erase(itr);
+			break;
+		}
+		++itr;
+	}
+	if (RoleCardController::getInstance()->heroVec.size() == 0)
+	{
+		log("lose");
+	}
 
 	//hero->getBaseFSM()->switchMoveState(keyPressedDurationDirection());
 	

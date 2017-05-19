@@ -7,6 +7,7 @@
 #include "cocostudio/CocoStudio.h"
 #include "BaseFSM.h"
 #include "BaseAI.h"
+#include "TextSuperEffects.h"
 //#include "RoleCardController.h"
 USING_NS_CC;
 //using namespace CocosDenshion;
@@ -24,6 +25,7 @@ typedef enum RoleState
 	ROLE_MOVE,
 	ROLE_DEAD,
 	ROLE_ATTACK,
+	ROLE_FREE,
 }RoleState;
 
 typedef enum RoleFace
@@ -44,6 +46,9 @@ public:
 	static BaseRole * creatWithProperty(propertyManager * manager);
 	bool init(propertyManager * manager);
 public:
+	void fallHP(const char * hpCount);
+	void purge();
+
 	Rect getRealRect(BaseRole * role,Rect rect);
 
 	void changeFaceDirection(RoleFace face);

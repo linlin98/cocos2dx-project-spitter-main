@@ -43,6 +43,25 @@ bool BaseRole::init(propertyManager * manager)
 	return true;
 }
 
+void BaseRole::fallHP(const char * hpCount)
+{
+	TextSuperEffects * effects = TextSuperEffects::create(hpCount);
+	effects->startAnimation();
+	this->addChild(effects);
+}
+
+void BaseRole::purge()
+{
+	this->getBaseFSM()->purge();
+	if (type == TYPE_MONSTER)
+	{
+		this->getBaseAI()->purge();
+	}
+	
+	removeFromParent();
+
+}
+
 Rect BaseRole::getRealRect(BaseRole * role, Rect rect)
 {
 	return Rect(rect.origin.x + role->getPositionX(), rect.origin.y + role->getPositionY(), rect.size.width, rect.size.height);
@@ -75,7 +94,16 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 			{
 				if (getRealRect(this,this->propertymanager->getHitRect()).intersectsRect(lockRole->getRealRect(lockRole,lockRole->propertymanager->getGetHitRect())))
 				{
-					log("Лїжа");
+					int atk = propertymanager->getATK();
+					__String * hpStr = __String::createWithFormat("%d", atk);
+					lockRole->fallHP(hpStr->getCString());
+					
+					lockRole->propertymanager->setHP(lockRole->propertymanager->getHP() - atk);
+					if (lockRole->propertymanager->getHP() <= 0)
+					{
+						//lockRole->getBaseAI()->stopRoleAI();
+						lockRole->getBaseFSM()->changeToDead();
+					}
 				}
 			}
 			else if(this->type == TYPE_HERO && !(RoleCardController::getInstance()->monsterVec.empty()))
@@ -84,7 +112,16 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 				{
 					if (getRealRect(this, this->propertymanager->getHitRect()).intersectsRect(RoleCardController::getInstance()->monsterVec[i]->getRealRect(RoleCardController::getInstance()->monsterVec[i], RoleCardController::getInstance()->monsterVec[i]->propertymanager->getGetHitRect())))
 					{
-						log("Лїжа");
+						int atk = propertymanager->getATK();
+						__String * hpStr = __String::createWithFormat("%d", atk);
+						RoleCardController::getInstance()->monsterVec[i]->fallHP(hpStr->getCString());
+
+						RoleCardController::getInstance()->monsterVec[i]->propertymanager->setHP(RoleCardController::getInstance()->monsterVec[i]->propertymanager->getHP() - atk);
+						if (RoleCardController::getInstance()->monsterVec[i]->propertymanager->getHP() <= 0)
+						{
+							RoleCardController::getInstance()->monsterVec[i]->getBaseAI()->stopRoleAI();
+							RoleCardController::getInstance()->monsterVec[i]->getBaseFSM()->changeToDead();
+						}
 					}
 				}
 			}
@@ -96,6 +133,14 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 		if (movmentType == COMPLETE)
 		{
 			basefsm->changeToDefault(1);
+		}
+	}
+
+	if (!strcmp(movementID, "gethit"))
+	{
+		if (movmentType == COMPLETE)
+		{
+			armature->runAction(Sequence::create(FadeOut::create(.5f), CallFunc::create([=]() {state = ROLE_FREE; }), NULL));
 		}
 	}
 }

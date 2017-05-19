@@ -16,6 +16,8 @@ public:
 public:
 	static BaseFSM * createFSM(BaseRole * baserole);
 	bool init(BaseRole * baserole);
+
+	void purge();
 public:
 	void changeToDefault(int i = 0);//默认参数可以写在声明或定义，但不能兼得 
 	void changeToDead();

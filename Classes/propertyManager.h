@@ -15,6 +15,7 @@ public:
 	CC_SYNTHESIZE(int, ID, ID);
 	CC_SYNTHESIZE(int, HP, HP);
 	CC_SYNTHESIZE(int, SPEED, SPEED);
+	CC_SYNTHESIZE(int, ATK, ATK);
 
 	CC_SYNTHESIZE(std::string, ArmatureName, ArmatureName);//资源路经
 	CC_SYNTHESIZE(std::string, DataName, DataName);//动画名字
