@@ -90,6 +90,9 @@ void BaseAI::updateFunc(float dt)
 	{
 		return;
 	}
+
+	baseRole->lockRole = roleVec[roleID];
+
 	if (baseRole->type == TYPE_MONSTER)
 	{
 		Vec2 enemyPos = roleVec[roleID]->getPosition();

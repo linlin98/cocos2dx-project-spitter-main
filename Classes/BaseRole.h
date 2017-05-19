@@ -7,6 +7,7 @@
 #include "cocostudio/CocoStudio.h"
 #include "BaseFSM.h"
 #include "BaseAI.h"
+//#include "RoleCardController.h"
 USING_NS_CC;
 //using namespace CocosDenshion;
 using namespace cocostudio;
@@ -33,6 +34,7 @@ typedef enum RoleFace
 
 class BaseFSM;
 class BaseAI;
+//class RoleCardController;
 
 class BaseRole : public Node
 {
@@ -42,6 +44,8 @@ public:
 	static BaseRole * creatWithProperty(propertyManager * manager);
 	bool init(propertyManager * manager);
 public:
+	Rect getRealRect(BaseRole * role,Rect rect);
+
 	void changeFaceDirection(RoleFace face);
 
 	void animationEvent(Armature * pArmature, MovementEventType movmentType, const std::string & movementIDstr);
@@ -50,11 +54,15 @@ public:
 	void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 	cocos2d::CustomCommand _customCommand;
 public:
+	BaseRole * lockRole;
+
 	propertyManager * propertymanager;
+	//RoleCardController * rolecardcontroller;
 	RoleType type;
 	RoleState state;
 	RoleFace face;
 	int ID;
+
 	CC_SYNTHESIZE(Armature *, armature, Armature);
 	CC_SYNTHESIZE(BaseFSM *, basefsm, BaseFSM);
 public:

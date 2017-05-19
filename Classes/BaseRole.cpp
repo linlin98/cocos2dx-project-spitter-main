@@ -1,6 +1,7 @@
 #include "BaseRole.h"
 #include "BaseFSM.h"
 #include "BaseAI.h"
+#include "RoleCardController.h"
 
 
 BaseRole::BaseRole()
@@ -42,6 +43,11 @@ bool BaseRole::init(propertyManager * manager)
 	return true;
 }
 
+Rect BaseRole::getRealRect(BaseRole * role, Rect rect)
+{
+	return Rect(rect.origin.x + role->getPositionX(), rect.origin.y + role->getPositionY(), rect.size.width, rect.size.height);
+}
+
 void BaseRole::changeFaceDirection(RoleFace face)
 {
 	if (face == FACE_LEFT)
@@ -65,6 +71,27 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 	{
 		if (movmentType == START)
 		{
+			if (this->type == TYPE_MONSTER && lockRole != nullptr)
+			{
+				if (getRealRect(this,this->propertymanager->getHitRect()).intersectsRect(lockRole->getRealRect(lockRole,lockRole->propertymanager->getGetHitRect())))
+				{
+					log("Лїжа");
+				}
+			}
+			else if(this->type == TYPE_HERO && !(RoleCardController::getInstance()->monsterVec.empty()))
+			{
+				for (int i = 0; i < RoleCardController::getInstance()->monsterVec.size(); i++)
+				{
+					if (getRealRect(this, this->propertymanager->getHitRect()).intersectsRect(RoleCardController::getInstance()->monsterVec[i]->getRealRect(RoleCardController::getInstance()->monsterVec[i], RoleCardController::getInstance()->monsterVec[i]->propertymanager->getGetHitRect())))
+					{
+						log("Лїжа");
+					}
+				}
+			}
+			else
+			{
+
+			}
 		}
 		if (movmentType == COMPLETE)
 		{
