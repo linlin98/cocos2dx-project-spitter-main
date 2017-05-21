@@ -16,6 +16,7 @@ public:
 public:
 	static RoleCardController* getInstance();
 	bool init();
+	void purge();
 public:
 	CC_SYNTHESIZE(int, HeroID, HeroID);
 public:

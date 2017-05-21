@@ -32,7 +32,7 @@ bool GameLayer::init()
 	propertyManager * pManager = propertyManager::create();
 	//pManager->setPlayerName("A");
 	pManager->setID(1);
-	pManager->setATK(10);
+	pManager->setATK(50);
 	pManager->setHP(100);
 	pManager->setArmatureName("hero");
 	pManager->setDataName("hero/hero.ExportJson");
@@ -53,6 +53,8 @@ bool GameLayer::init()
 	hero->face = FACE_RIGHT;
 
 	this->addChild(hero, 1, 1);
+
+	//缺少一个生成类，复制粘贴是什么辣鸡
 
 	propertyManager * pManager2 = propertyManager::create();
 	//pManager->setPlayerName("A");
@@ -78,10 +80,36 @@ bool GameLayer::init()
 	monster->face = FACE_RIGHT;
 	this->addChild(monster,1,1);
 
+	propertyManager * pManager3 = propertyManager::create();
+	//pManager->setPlayerName("A");
+	pManager3->setID(3);
+	pManager3->setATK(10);
+	pManager3->setHP(100);
+	pManager3->setArmatureName("hero");
+	pManager3->setDataName("hero/hero.ExportJson");
+	pManager3->setSPEED(1);//前进后退速度应该不一致，有待修改
+						   //pManager->setHP()
+	pManager3->setGetHitRect({ { -40,-40 },{ 80,80 } });
+	pManager3->setHitRect({ { 40,-40 },{ 80,80 } });
+	pManager3->setHitPoint(pManager3->getHitRect().origin);
+	pManager3->setGetHitPoint(pManager3->getGetHitRect().origin);
+	pManager3->setATKLimit(100);
+	pManager3->setLockLimit(200);
+	pManager3->retain();
+
+	monster2 = BaseRole::creatWithProperty(pManager3);
+	monster2->setPosition(Vec2(400, 200));
+	monster2->type = static_cast<RoleType>(2);
+	monster2->state = ROLE_DEFAULT;
+	monster2->face = FACE_RIGHT;
+	this->addChild(monster2, 1, 1);
+
 	RoleCardController::getInstance()->heroVec.push_back(hero);
 	RoleCardController::getInstance()->setHeroID(hero->propertymanager->getID());
-	RoleCardController::getInstance()->retain();
+	//RoleCardController::getInstance()->retain();
 	RoleCardController::getInstance()->monsterVec.push_back(monster);
+	//RoleCardController::getInstance()->retain();
+	RoleCardController::getInstance()->monsterVec.push_back(monster2);
 	RoleCardController::getInstance()->retain();
 
 	BaseFSM * basefsm = BaseFSM::createFSM(hero);
@@ -92,6 +120,10 @@ bool GameLayer::init()
 	basefsm2->retain();
 	monster->setBaseFSM(basefsm2);
 
+	BaseFSM * basefsm3 = BaseFSM::createFSM(monster2);
+	basefsm3->retain();
+	monster2->setBaseFSM(basefsm3);
+
 	//BaseAI * ai = BaseAI::creatAI(hero);
 	//ai->retain();
 	//hero->setBaseAI(ai);
@@ -100,8 +132,13 @@ bool GameLayer::init()
 	ai2->retain();
 	monster->setBaseAI(ai2);
 
+	BaseAI * ai = BaseAI::creatAI(monster2);
+	ai->retain();
+	monster2->setBaseAI(ai);
+
 	//ai->startRoleAI();
 	ai2->startRoleAI();
+	ai->startRoleAI();
 
 	auto winSize = Director::getInstance()->getWinSize();
 	auto bg_pic = Sprite::create("res/background_demo.png");
@@ -154,7 +191,8 @@ void GameLayer::update(float dt)
 	}
 	if (RoleCardController::getInstance()->monsterVec.size() == 0 )
 	{
-		log("win");
+		//this->purge();
+		//赢啦，应该转到胜利界面，或下一关数据读取界面。
 		return;
 	}
 
@@ -171,7 +209,8 @@ void GameLayer::update(float dt)
 	}
 	if (RoleCardController::getInstance()->heroVec.size() == 0)
 	{
-		log("lose");
+		//this->purge();
+		//输了，转到嘲讽界面2333
 		return;
 	}
 
@@ -180,6 +219,7 @@ void GameLayer::update(float dt)
 		hero->getBaseFSM()->switchActionState(keyPressedDurationAcion());
 	}
 
+	this->setViewPointCenter(hero->getPosition());
 
 	//hero->getBaseFSM()->switchMoveState(keyPressedDurationDirection());
 	
@@ -234,4 +274,39 @@ int GameLayer::keyPressedDurationAcion()
 		return FACE_RIGHT;
 	}
 	return 0;
+}
+
+void GameLayer::setViewPointCenter(Point position)
+{
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	int x = MAX(position.x, visibleSize.width / 2);								
+	int y = MAX(position.y, visibleSize.height / 2);								
+	//x = MIN(x, (_tileMap->getMapSize().width * _tileMap->getTileSize().width)
+		//- visibleSize.width / 2);											
+	//y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
+		//- visibleSize.height / 2);											
+
+
+	//屏幕中心点
+	Point pointA = Point(visibleSize.width / 2, visibleSize.height / 2); 					
+	//使精灵处于屏幕中心，移动地图目标位置
+	Point pointB = Point(x, y); 											
+	log("目标位置 (%f ,%f) ", pointB.x, pointB.y);
+
+
+	//地图移动偏移量
+	Point offset = pointA - pointB; 											
+
+
+	log("offset (%f ,%f) ", offset.x, offset.y);
+	this->setPosition(offset);												
+}
+
+void GameLayer::purge()
+{
+	//释放还活着的，防止内存泄漏
+	Director::getInstance()->getScheduler()->unschedule(schedule_selector(GameLayer::update), this);
+	RoleCardController::getInstance()->purge();
+	this->removeFromParent();
 }

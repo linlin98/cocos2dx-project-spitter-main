@@ -89,6 +89,7 @@ void BaseAI::updateFunc(float dt)
 	} 
 	else
 	{
+		baseRole->lockRole = nullptr;
 		return;
 	}
 

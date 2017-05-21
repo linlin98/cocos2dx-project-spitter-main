@@ -60,7 +60,11 @@ void BaseRole::purge()
 	
 	removeFromParent();
 
-	//lockRole = nullptr;
+	if (this->type == TYPE_HERO)
+	{
+		lockRole = nullptr;
+	}
+	
 	//CC_SAFE_RELEASE(lockRole);
 	//CC_SAFE_RELEASE(this);
 
@@ -94,7 +98,7 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 	{
 		if (movmentType == START)
 		{
-			if (this->type == TYPE_MONSTER && lockRole != nullptr)
+			if (this->type == TYPE_MONSTER && lockRole != nullptr && this->state != ROLE_DEAD && this->state != ROLE_FREE)
 			{
 				if (getRealRect(this,this->propertymanager->getHitRect()).intersectsRect(lockRole->getRealRect(lockRole,lockRole->propertymanager->getGetHitRect())))
 				{
