@@ -14,6 +14,8 @@ GameLayer::~GameLayer()
 
 bool GameLayer::init()
 {
+	//this->onEnter();
+
 	this->scheduleUpdate();
 	//Director::getInstance()->getScheduler()->schedule(schedule_selector(ControlLayer::update), this, (float)1 / 60, false);
 
@@ -260,10 +262,15 @@ int GameLayer::keyPressedDurationAcion()
 {
 	auto leftArrow = EventKeyboard::KeyCode::KEY_LEFT_ARROW,
 		rightArrow = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
-		a = EventKeyboard::KeyCode::KEY_A;
+		a = EventKeyboard::KeyCode::KEY_A,
+		space = EventKeyboard::KeyCode::KEY_SPACE;
 	if (isKeyPressed(a))
 	{
 		return ROLE_ATTACK;
+	}
+	else if (isKeyPressed(space))
+	{
+		return ROLE_JUMP;
 	}
 	else if (isKeyPressed(leftArrow))
 	{
@@ -273,6 +280,7 @@ int GameLayer::keyPressedDurationAcion()
 	{
 		return FACE_RIGHT;
 	}
+
 	return 0;
 }
 

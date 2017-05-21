@@ -26,6 +26,7 @@ typedef enum RoleState
 	ROLE_DEAD,
 	ROLE_ATTACK,
 	ROLE_FREE,
+	ROLE_JUMP,
 }RoleState;
 
 typedef enum RoleFace
@@ -48,7 +49,8 @@ public:
 public:
 	void fallHP(const char * hpCount);
 	void purge();
-
+	void jump();
+	void jumpEnd();
 	Rect getRealRect(BaseRole * role,Rect rect);
 
 	void changeFaceDirection(RoleFace face);

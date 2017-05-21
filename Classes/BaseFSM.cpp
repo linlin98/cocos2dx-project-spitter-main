@@ -72,6 +72,22 @@ void BaseFSM::changeToAttack()
 	}
 }
 
+void BaseFSM::changeToJump()
+{
+	if (role->state == ROLE_ATTACK)
+	{
+		return;
+	}
+
+	if (role->state != ROLE_JUMP && role->state != ROLE_DEAD)
+	{
+		role->state = ROLE_JUMP;
+		role->getArmature()->getAnimation()->play("default", -1, 0);
+	}
+
+	role->jump();
+}
+
 void BaseFSM::changeToLeft()
 {
 	if (role->state == ROLE_ATTACK)
@@ -161,6 +177,9 @@ void BaseFSM::switchActionState(int state)
 		break;
 	case FACE_RIGHT:
 		this->changeToRight();
+		break;
+	case ROLE_JUMP:
+		this->changeToJump();
 		break;
 	default:
 		role->getArmature()->stopAllActions();

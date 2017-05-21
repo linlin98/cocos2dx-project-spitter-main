@@ -70,6 +70,23 @@ void BaseRole::purge()
 
 }
 
+void BaseRole::jump()
+{
+	/*创建动作，2s，原地跳跃(即落地的地点相对于起跳地点x偏移0，y偏移0)，高度250，弹跳次数1*/
+	CCJumpBy* jump = CCJumpBy::create(1.5f, ccp(-2, 0), 15, 1);
+	/*callFunc也是一个动作，作用是调用一个函数*/
+	CCCallFunc* callFunc = CCCallFunc::create(this, callfunc_selector(BaseRole::jumpEnd));
+	/*组合动作*/
+	CCActionInterval* jumpActions = CCSequence::create(jump, callFunc, NULL);
+
+	runAction(jumpActions);
+}
+
+void BaseRole::jumpEnd()
+{
+	this->getBaseFSM()->changeToDefault();
+}
+
 Rect BaseRole::getRealRect(BaseRole * role, Rect rect)
 {
 	return Rect(rect.origin.x + role->getPositionX(), rect.origin.y + role->getPositionY(), rect.size.width, rect.size.height);

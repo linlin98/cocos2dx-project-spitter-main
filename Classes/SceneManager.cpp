@@ -33,6 +33,9 @@ void SceneManager::goOpenScene()
 void SceneManager::goGameScene()
 {
 	gameScene = Scene::create();
+	//显示物理世界调试状态, 显示红色的框, 方便调试
+	//gameScene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
 	GameLayer * layer = GameLayer::create();
 	layer->tsm = this;
 	gameScene->addChild(layer);
