@@ -60,6 +60,10 @@ void BaseRole::purge()
 	
 	removeFromParent();
 
+	//lockRole = nullptr;
+	//CC_SAFE_RELEASE(lockRole);
+	//CC_SAFE_RELEASE(this);
+
 }
 
 Rect BaseRole::getRealRect(BaseRole * role, Rect rect)

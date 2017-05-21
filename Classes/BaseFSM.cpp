@@ -46,7 +46,7 @@ void BaseFSM::changeToDefault(int i)
 		return;
 	}
 
-	if (role->state != ROLE_DEFAULT && role->state != ROLE_DEAD)
+	if (role->state != ROLE_DEFAULT && role->state != ROLE_DEAD && role->state != ROLE_FREE)
 	{
 		role->state = ROLE_DEFAULT;
 		role->getArmature()->getAnimation()->play("default");

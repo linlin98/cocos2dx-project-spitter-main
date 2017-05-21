@@ -140,7 +140,6 @@ void GameLayer::update(float dt)
 	auto leftArrow = EventKeyboard::KeyCode::KEY_LEFT_ARROW, 
 		rightArrow = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
 		a = EventKeyboard::KeyCode::KEY_A;
-	hero->getBaseFSM()->switchActionState(keyPressedDurationAcion());
 
 	auto itr = RoleCardController::getInstance()->monsterVec.begin();
 	while (itr != RoleCardController::getInstance()->monsterVec.end())
@@ -156,6 +155,7 @@ void GameLayer::update(float dt)
 	if (RoleCardController::getInstance()->monsterVec.size() == 0 )
 	{
 		log("win");
+		return;
 	}
 
 	itr = RoleCardController::getInstance()->heroVec.begin();
@@ -172,7 +172,14 @@ void GameLayer::update(float dt)
 	if (RoleCardController::getInstance()->heroVec.size() == 0)
 	{
 		log("lose");
+		return;
 	}
+
+	if (hero->state != ROLE_FREE && hero->state != ROLE_DEAD)
+	{
+		hero->getBaseFSM()->switchActionState(keyPressedDurationAcion());
+	}
+
 
 	//hero->getBaseFSM()->switchMoveState(keyPressedDurationDirection());
 	
