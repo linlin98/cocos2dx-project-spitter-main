@@ -56,7 +56,7 @@ void BaseFSM::changeToDefault(int i)
 
 void BaseFSM::changeToDead()
 {
-	if (role->state != ROLE_DEAD)
+	if (role->state != ROLE_DEAD&&role->state!=ROLE_FREE)
 	{
 		role->state = ROLE_DEAD;
 		role->getArmature()->getAnimation()->play("gethit",-1,0);//≤ª÷ÿ∏¥≤•∑≈

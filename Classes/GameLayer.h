@@ -9,6 +9,8 @@
 #include "RoleCardController.h"
 #include "BaseFSM.h"
 #include "BaseAI.h"
+#include "BaseRole.h"
+#include "BaseTrap.h"
 USING_NS_CC;
 
 //typedef enum RoleFace
@@ -36,6 +38,7 @@ public:
 	BaseRole * hero;
 	BaseRole * monster;
 	BaseRole * monster2;
+	BaseTrap * trap;
 	SceneManager * tsm;
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };

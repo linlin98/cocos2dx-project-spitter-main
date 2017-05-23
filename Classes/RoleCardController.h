@@ -5,6 +5,7 @@
 #include "cocos2d.h"
 #include <iostream>
 #include "BaseRole.h"
+#include "BaseTrap.h"
 USING_NS_CC;
 
 
@@ -22,7 +23,7 @@ public:
 public:
 	std::vector<BaseRole *> heroVec;
 	std::vector<BaseRole *> monsterVec;
-
+	std::vector<BaseTrap *> trapVec;
 	BaseRole * getHero();
 };
 

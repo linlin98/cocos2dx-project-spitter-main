@@ -32,14 +32,12 @@ bool GameLayer::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	propertyManager * pManager = propertyManager::create();
-	//pManager->setPlayerName("A");
 	pManager->setID(1);
 	pManager->setATK(50);
 	pManager->setHP(100);
 	pManager->setArmatureName("hero");
 	pManager->setDataName("hero/hero.ExportJson");
 	pManager->setSPEED(2);//前进后退速度应该不一致，有待修改
-	//pManager->setHP()
 	pManager->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager->setHitRect({ {40,-40},{80,80} });
 	pManager->setHitPoint(pManager->getHitRect().origin);
@@ -51,22 +49,18 @@ bool GameLayer::init()
 	hero = BaseRole::creatWithProperty(pManager);
 	hero->setPosition(Vec2(100, 200));
 	hero->type = static_cast<RoleType>(1);
-	hero->state = ROLE_DEFAULT;
-	hero->face = FACE_RIGHT;
 
 	this->addChild(hero, 1, 1);
 
 	//缺少一个生成类，复制粘贴是什么辣鸡
 
 	propertyManager * pManager2 = propertyManager::create();
-	//pManager->setPlayerName("A");
 	pManager2->setID(2);
 	pManager2->setATK(10);
 	pManager2->setHP(100);
 	pManager2->setArmatureName("hero");
 	pManager2->setDataName("hero/hero.ExportJson");
 	pManager2->setSPEED(1);//前进后退速度应该不一致，有待修改
-						  //pManager->setHP()
 	pManager2->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager2->setHitRect({ { 40,-40 },{ 80,80 } });
 	pManager2->setHitPoint(pManager2->getHitRect().origin);
@@ -78,19 +72,16 @@ bool GameLayer::init()
 	monster = BaseRole::creatWithProperty(pManager2);
 	monster->setPosition(Vec2(600,200));
 	monster->type = static_cast<RoleType>(2);
-	monster->state = ROLE_DEFAULT;
-	monster->face = FACE_RIGHT;
+
 	this->addChild(monster,1,1);
 
 	propertyManager * pManager3 = propertyManager::create();
-	//pManager->setPlayerName("A");
 	pManager3->setID(3);
 	pManager3->setATK(10);
 	pManager3->setHP(100);
 	pManager3->setArmatureName("hero");
 	pManager3->setDataName("hero/hero.ExportJson");
 	pManager3->setSPEED(1);//前进后退速度应该不一致，有待修改
-						   //pManager->setHP()
 	pManager3->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager3->setHitRect({ { 40,-40 },{ 80,80 } });
 	pManager3->setHitPoint(pManager3->getHitRect().origin);
@@ -102,16 +93,23 @@ bool GameLayer::init()
 	monster2 = BaseRole::creatWithProperty(pManager3);
 	monster2->setPosition(Vec2(400, 200));
 	monster2->type = static_cast<RoleType>(2);
-	monster2->state = ROLE_DEFAULT;
-	monster2->face = FACE_RIGHT;
+
 	this->addChild(monster2, 1, 1);
+
+	propertyManager * pManager4 = propertyManager::create();
+	pManager4->setHitRect({ { -40,-40 },{ 80,80 } });
+	pManager4->setHitPoint(pManager4->getHitRect().origin);
+	pManager4->retain();
+
+	trap = BaseTrap::createWithProperty(pManager4, hero);
+	trap->setPosition(Vec2(800, 200));
+	this->addChild(trap, 1, 1);
 
 	RoleCardController::getInstance()->heroVec.push_back(hero);
 	RoleCardController::getInstance()->setHeroID(hero->propertymanager->getID());
-	//RoleCardController::getInstance()->retain();
 	RoleCardController::getInstance()->monsterVec.push_back(monster);
-	//RoleCardController::getInstance()->retain();
 	RoleCardController::getInstance()->monsterVec.push_back(monster2);
+	RoleCardController::getInstance()->trapVec.push_back(trap);
 	RoleCardController::getInstance()->retain();
 
 	BaseFSM * basefsm = BaseFSM::createFSM(hero);
@@ -126,10 +124,6 @@ bool GameLayer::init()
 	basefsm3->retain();
 	monster2->setBaseFSM(basefsm3);
 
-	//BaseAI * ai = BaseAI::creatAI(hero);
-	//ai->retain();
-	//hero->setBaseAI(ai);
-
 	BaseAI * ai2 = BaseAI::creatAI(monster);
 	ai2->retain();
 	monster->setBaseAI(ai2);
@@ -138,7 +132,6 @@ bool GameLayer::init()
 	ai->retain();
 	monster2->setBaseAI(ai);
 
-	//ai->startRoleAI();
 	ai2->startRoleAI();
 	ai->startRoleAI();
 
@@ -166,7 +159,6 @@ void GameLayer::menuCallBack(Ref * pSender)
 		{
 			this->unscheduleAllSelectors();
 			Director::getInstance()->getScheduler()->unscheduleAll();
-			//monster->getBaseAI()->stopRoleAI();
 			tsm->goOpenScene();
 		}
 		break;
@@ -216,16 +208,29 @@ void GameLayer::update(float dt)
 		return;
 	}
 
+	auto trap_itr = RoleCardController::getInstance()->trapVec.begin();
+	while (trap_itr != RoleCardController::getInstance()->trapVec.end())
+	{
+		if (hero->state != ROLE_DEAD&&hero->state != ROLE_FREE && (*trap_itr)->isColliding(hero))
+		{
+			__String * hpStr = __String::createWithFormat("%d", 10);
+			hero->fallHP(hpStr->getCString());
+			hero->propertymanager->setHP(hero->propertymanager->getHP() - 10);
+			if (hero->propertymanager->getHP() <= 0)
+			{
+				//lockRole->getBaseAI()->stopRoleAI();
+				hero->getBaseFSM()->changeToDead();
+			}
+		}
+		++trap_itr;
+	}
+
 	if (hero->state != ROLE_FREE && hero->state != ROLE_DEAD)
 	{
 		hero->getBaseFSM()->switchActionState(keyPressedDurationAcion());
 	}
 
 	this->setViewPointCenter(hero->getPosition());
-
-	//hero->getBaseFSM()->switchMoveState(keyPressedDurationDirection());
-	
-	//hero->getBaseFSM()->switchMoveState();
 }
 
 bool GameLayer::isKeyPressed(EventKeyboard::KeyCode keyCode)

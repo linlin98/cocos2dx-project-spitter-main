@@ -44,21 +44,22 @@ class BaseRole : public Node
 public:
 	BaseRole();
 	virtual ~BaseRole();
+	//static BaseRole * create(propertyManager * manager);
 	static BaseRole * creatWithProperty(propertyManager * manager);
 	bool init(propertyManager * manager);
 public:
-	void fallHP(const char * hpCount);
-	void purge();
-	void jump();
-	void jumpEnd();
-	Rect getRealRect(BaseRole * role,Rect rect);
+	virtual void fallHP(const char * hpCount);
+	virtual void purge();
+	virtual void jump();
+	virtual void jumpEnd();
+	virtual Rect getRealRect(BaseRole * role,Rect rect);
 
-	void changeFaceDirection(RoleFace face);
+	virtual void changeFaceDirection(RoleFace face);
 
-	void animationEvent(Armature * pArmature, MovementEventType movmentType, const std::string & movementIDstr);
+	virtual void animationEvent(Armature * pArmature, MovementEventType movmentType, const std::string & movementIDstr);
 
-	void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)override;
-	void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
+	virtual void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)override;
+	virtual void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
 	cocos2d::CustomCommand _customCommand;
 public:
 	BaseRole * lockRole;

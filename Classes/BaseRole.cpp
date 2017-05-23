@@ -13,6 +13,12 @@ BaseRole::~BaseRole()
 {
 }
 
+//BaseRole * BaseRole::create(propertyManager * manager)
+//{
+//	BaseRole * baseRole = creatWithProperty(manager);
+//	baseRole->
+//}
+
 BaseRole * BaseRole::creatWithProperty(propertyManager * manager)
 {
 	BaseRole * baseRole = new BaseRole;
@@ -32,6 +38,9 @@ bool BaseRole::init(propertyManager * manager)
 {
 	propertymanager = manager;
 
+	state = ROLE_DEFAULT;
+	face = FACE_RIGHT;
+
 	ArmatureDataManager::getInstance()->addArmatureFileInfo(propertymanager->getDataName());
 	armature = Armature::create(propertymanager->getArmatureName());
 	armature->getAnimation()->play("default");
@@ -45,9 +54,12 @@ bool BaseRole::init(propertyManager * manager)
 
 void BaseRole::fallHP(const char * hpCount)
 {
-	TextSuperEffects * effects = TextSuperEffects::create(hpCount);
-	effects->startAnimation();
-	this->addChild(effects);
+	if (this->state!=ROLE_DEAD && state!=ROLE_FREE)
+	{
+		TextSuperEffects * effects = TextSuperEffects::create(hpCount);
+		effects->startAnimation();
+		this->addChild(effects);
+	}
 }
 
 void BaseRole::purge()
