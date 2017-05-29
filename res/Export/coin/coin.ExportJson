@@ -9,7 +9,7 @@
         {
           "name": "Layer2",
           "parent": "",
-          "dI": 12,
+          "dI": 5,
           "x": 0.0,
           "y": 0.0,
           "z": 1,
@@ -214,9 +214,9 @@
       "name": "coin",
       "mov_data": [
         {
-          "name": "coin bilibili",
+          "name": "coin",
           "dr": 49,
-          "lp": false,
+          "lp": true,
           "to": 0,
           "drTW": 0,
           "twE": 0,
