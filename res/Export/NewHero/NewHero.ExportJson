@@ -487,7 +487,7 @@
         },
         {
           "name": "attack",
-          "dr": 51,
+          "dr": 50,
           "lp": true,
           "to": 0,
           "drTW": 0,
@@ -669,7 +669,7 @@
         },
         {
           "name": "run",
-          "dr": 21,
+          "dr": 20,
           "lp": true,
           "to": 0,
           "drTW": 0,
@@ -761,7 +761,7 @@
         },
         {
           "name": "die",
-          "dr": 31,
+          "dr": 30,
           "lp": true,
           "to": 0,
           "drTW": 0,
@@ -887,22 +887,14 @@
   "texture_data": [
     {
       "name": "stand1",
-      "width": 0.0,
-      "height": 0.0,
+      "width": 56.0,
+      "height": 103.0,
       "pX": 0.5,
       "pY": 0.5,
       "plistFile": ""
     },
     {
       "name": "stand2",
-      "width": 0.0,
-      "height": 0.0,
-      "pX": 0.5,
-      "pY": 0.5,
-      "plistFile": ""
-    },
-    {
-      "name": "stand3",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.5,
