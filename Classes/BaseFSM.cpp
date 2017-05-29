@@ -59,7 +59,7 @@ void BaseFSM::changeToDead()
 	if (role->state != ROLE_DEAD&&role->state!=ROLE_FREE)
 	{
 		role->state = ROLE_DEAD;
-		role->getArmature()->getAnimation()->play("gethit",-1,0);//不重复播放
+		role->getArmature()->getAnimation()->play("die",-1,0);//不重复播放
 	}
 }
 
@@ -83,9 +83,9 @@ void BaseFSM::changeToJump()
 	{
 		role->state = ROLE_JUMP;
 		role->getArmature()->getAnimation()->play("default", -1, 0);
+	
+		role->jump();
 	}
-
-	role->jump();
 }
 
 void BaseFSM::changeToLeft()
@@ -107,9 +107,9 @@ void BaseFSM::changeToLeft()
 
 		std::string movement = role->getArmature()->getAnimation()->getCurrentMovementID();
 		char * nowMovement = const_cast<char *>(movement.c_str());
-		if (strcmp(nowMovement, "run_front"))
+		if (strcmp(nowMovement, "run"))
 		{
-			role->getArmature()->getAnimation()->play("run_front");
+			role->getArmature()->getAnimation()->play("run");
 		}
 	
 	role->setPosition(Vec2(role->getPositionX() - role->propertymanager->getSPEED(), role->getPositionY()));
@@ -135,9 +135,9 @@ void BaseFSM::changeToRight()
 	std::string movement = role->getArmature()->getAnimation()->getCurrentMovementID();
 	char * nowMovement = const_cast<char *>(movement.c_str());
 
-	if (strcmp(nowMovement, "run_front"))//if the current movement is not running back ,play it.
+	if (strcmp(nowMovement, "run"))//if the current movement is not running back ,play it.
 	{
-		role->getArmature()->getAnimation()->play("run_front");
+		role->getArmature()->getAnimation()->play("run");
 	}
 	
 	role->setPosition(Vec2(role->getPositionX() + role->propertymanager->getSPEED(), role->getPositionY()));

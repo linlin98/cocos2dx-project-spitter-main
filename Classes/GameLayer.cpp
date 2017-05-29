@@ -35,8 +35,8 @@ bool GameLayer::init()
 	pManager->setID(1);
 	pManager->setATK(50);
 	pManager->setHP(100);
-	pManager->setArmatureName("hero");
-	pManager->setDataName("hero/hero.ExportJson");
+	pManager->setArmatureName("NewHero");
+	pManager->setDataName("NewHero/NewHero.ExportJson");
 	pManager->setSPEED(2);//前进后退速度应该不一致，有待修改
 	pManager->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager->setHitRect({ {40,-40},{80,80} });
@@ -58,8 +58,8 @@ bool GameLayer::init()
 	pManager2->setID(2);
 	pManager2->setATK(10);
 	pManager2->setHP(100);
-	pManager2->setArmatureName("hero");
-	pManager2->setDataName("hero/hero.ExportJson");
+	pManager2->setArmatureName("enemy");
+	pManager2->setDataName("enemy/enemy.ExportJson");
 	pManager2->setSPEED(1);//前进后退速度应该不一致，有待修改
 	pManager2->setGetHitRect({ { -40,-40 },{ 80,80 } });
 	pManager2->setHitRect({ { 40,-40 },{ 80,80 } });
@@ -99,17 +99,37 @@ bool GameLayer::init()
 	propertyManager * pManager4 = propertyManager::create();
 	pManager4->setHitRect({ { -40,-40 },{ 80,80 } });
 	pManager4->setHitPoint(pManager4->getHitRect().origin);
+	pManager4->setArmatureName("hero");
+	pManager4->setDataName("hero/hero.ExportJson");
 	pManager4->retain();
 
 	trap = BaseTrap::createWithProperty(pManager4, hero);
-	trap->setPosition(Vec2(800, 200));
+	//trap = static_cast<BaseTrap *>(Sprite::create("res/mushroom.png"));
+	//trap->autorelease();
+	trap->init(pManager4, hero);
+	trap->setPosition(Vec2(800, 100));
 	this->addChild(trap, 1, 1);
+
+	propertyManager * pManager5 = propertyManager::create();
+	pManager5->setHitRect({ { -40,-40 },{ 80,80 } });
+	pManager5->setHitPoint(pManager5->getHitRect().origin);
+	pManager5->setArmatureName("coin");
+	pManager5->setDataName("coin/coin.ExportJson");
+	pManager5->retain();
+
+	coin = Coin::createWithProperty(pManager5, hero);
+	//trap = static_cast<BaseTrap *>(Sprite::create("res/mushroom.png"));
+	//trap->autorelease();
+	//coin->init(pManager5, hero);
+	coin->setPosition(Vec2(1000, 200));
+	this->addChild(coin, 1, 1);
 
 	RoleCardController::getInstance()->heroVec.push_back(hero);
 	RoleCardController::getInstance()->setHeroID(hero->propertymanager->getID());
 	RoleCardController::getInstance()->monsterVec.push_back(monster);
 	RoleCardController::getInstance()->monsterVec.push_back(monster2);
 	RoleCardController::getInstance()->trapVec.push_back(trap);
+	RoleCardController::getInstance()->coinVec.push_back(coin);
 	RoleCardController::getInstance()->retain();
 
 	BaseFSM * basefsm = BaseFSM::createFSM(hero);
@@ -224,6 +244,22 @@ void GameLayer::update(float dt)
 		}
 		++trap_itr;
 	}
+
+	auto coin_itr = RoleCardController::getInstance()->coinVec.begin();
+	while (coin_itr != RoleCardController::getInstance()->coinVec.end())
+	{
+		if (hero->state != ROLE_DEAD&&hero->state != ROLE_FREE && (*coin_itr)->isColliding(hero))
+		{
+			__String * coinStr = __String::createWithFormat("%d", 1);
+			hero->addCoinAmount(coinStr->getCString());
+			(*coin_itr)->addCoinAmount(1);
+			(*coin_itr)->state = COIN_COLLECTED;
+			RoleCardController::getInstance()->coinVec.erase(coin_itr);
+			break;
+		}
+		++coin_itr;
+	}
+
 
 	if (hero->state != ROLE_FREE && hero->state != ROLE_DEAD)
 	{
