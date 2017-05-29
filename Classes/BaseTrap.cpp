@@ -11,10 +11,10 @@ BaseTrap::~BaseTrap()
 {
 }
 
-BaseTrap * BaseTrap::createWithProperty(propertyManager * manager,BaseRole * role)
+BaseTrap * BaseTrap::createWithProperty(propertyManager * manager, BaseRole * role)
 {
 	BaseTrap * baseTrap = new BaseTrap;
-	if (baseTrap && baseTrap->init(manager,role))
+	if (baseTrap && baseTrap->init(manager, role))
 	{
 		baseTrap->autorelease();
 	}
@@ -30,7 +30,13 @@ bool BaseTrap::init(propertyManager * manager,BaseRole * role)
 {
 	this->propertymanager = manager;
 	this->currentPlayer = role;
-	CCSprite::initWithFile("res/HelloWorld.png");
+	CCSprite::initWithFile("res/mushroom.png");
+	ArmatureDataManager::getInstance()->addArmatureFileInfo(propertymanager->getDataName());
+	armature = Armature::create(propertymanager->getArmatureName());
+	armature->getAnimation()->play("default");
+
+	this->addChild(armature);
+
 	return true;
 }
 void BaseTrap::draw(cocos2d::Renderer * renderer, const cocos2d::Mat4 & transform, uint32_t flags)

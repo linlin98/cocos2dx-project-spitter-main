@@ -11,6 +11,7 @@
 #include "BaseAI.h"
 #include "BaseRole.h"
 #include "BaseTrap.h"
+#include "Coin.h"
 USING_NS_CC;
 
 //typedef enum RoleFace
@@ -39,6 +40,7 @@ public:
 	BaseRole * monster;
 	BaseRole * monster2;
 	BaseTrap * trap;
+	Coin * coin;
 	SceneManager * tsm;
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };

@@ -5,7 +5,7 @@
 #include <iostream>
 USING_NS_CC;
 class BaseRole;
-class BaseTrap : public CCSprite
+class BaseTrap : public Sprite
 {
 public:
 	BaseTrap();
@@ -23,6 +23,7 @@ public:
 	BaseRole * currentPlayer;
 public:
 	virtual bool isColliding(BaseRole * role);
+	CC_SYNTHESIZE(Armature *, armature, Armature);
 };
 
 

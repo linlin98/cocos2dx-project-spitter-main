@@ -13,9 +13,9 @@ public:
 	TextSuperEffects();
 	virtual ~TextSuperEffects();
 
-	static TextSuperEffects * create(const char * str);
+	static TextSuperEffects * create(const char * str,const int index = 0);
 
-	bool init(const char * str);
+	bool init(const char * str,const int index = 0);
 
 	void startAnimation();
 

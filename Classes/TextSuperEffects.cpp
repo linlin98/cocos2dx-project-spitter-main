@@ -11,10 +11,11 @@ TextSuperEffects::~TextSuperEffects()
 {
 }
 
-TextSuperEffects * TextSuperEffects::create(const char * str)
+TextSuperEffects * TextSuperEffects::create(const char * str,const int index)
 {
 	TextSuperEffects * texteffect = new TextSuperEffects;
-	if (texteffect && texteffect->init(str))
+	
+	if (texteffect && texteffect->init(str, index))
 	{
 		texteffect->autorelease();
 	}
@@ -27,10 +28,18 @@ TextSuperEffects * TextSuperEffects::create(const char * str)
 	return texteffect;
 }
 
-bool TextSuperEffects::init(const char * str)
+bool TextSuperEffects::init(const char * str, const int index)
 {
 	label = Label::createWithSystemFont(str, "", 30);
-	label->setColor(Color3B::RED);
+	if (index==0)
+	{
+		label->setColor(Color3B::RED);
+	}
+	else if(index == 1)
+	{
+		label->setColor(Color3B::YELLOW);
+	}
+	
 	this->addChild(label);
 
 	return true;

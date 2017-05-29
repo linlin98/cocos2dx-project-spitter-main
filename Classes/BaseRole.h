@@ -49,6 +49,7 @@ public:
 	bool init(propertyManager * manager);
 public:
 	virtual void fallHP(const char * hpCount);
+	virtual void addCoinAmount(const char * coinCount);
 	virtual void purge();
 	virtual void jump();
 	virtual void jumpEnd();
@@ -71,6 +72,7 @@ public:
 	RoleFace face;
 	int ID;
 
+	CC_SYNTHESIZE(int, coinAmount, coinAmount);
 	CC_SYNTHESIZE(Armature *, armature, Armature);
 	CC_SYNTHESIZE(BaseFSM *, basefsm, BaseFSM);
 public:
