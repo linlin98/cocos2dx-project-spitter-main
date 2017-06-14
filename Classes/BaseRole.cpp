@@ -40,6 +40,7 @@ bool BaseRole::init(propertyManager * manager)
 
 	state = ROLE_DEFAULT;
 	face = FACE_RIGHT;
+	this->setcoinAmount(0);
 
 	ArmatureDataManager::getInstance()->addArmatureFileInfo(propertymanager->getDataName());
 	armature = Armature::create(propertymanager->getArmatureName());
@@ -57,6 +58,16 @@ void BaseRole::fallHP(const char * hpCount)
 	if (this->state!=ROLE_DEAD && state!=ROLE_FREE)
 	{
 		TextSuperEffects * effects = TextSuperEffects::create(hpCount);
+		effects->startAnimation();
+		this->addChild(effects);
+	}
+}
+
+void BaseRole::addCoinAmount(const char * coinCount)
+{
+	if (this->state != ROLE_DEAD && state != ROLE_FREE)
+	{
+		TextSuperEffects * effects = TextSuperEffects::create(coinCount, 1);
 		effects->startAnimation();
 		this->addChild(effects);
 	}
@@ -173,7 +184,7 @@ void BaseRole::animationEvent(Armature * pArmature, MovementEventType movmentTyp
 		}
 	}
 
-	if (!strcmp(movementID, "gethit"))
+	if (!strcmp(movementID, "die"))
 	{
 		if (movmentType == COMPLETE)
 		{
